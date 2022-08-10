@@ -1,15 +1,13 @@
 ﻿namespace ExampleApp.Services.Polymorphism;
 
 /// <summary>
-///     A shape service.
+///     A service factory used to instantiate the right service based on the POCO type.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public interface IShapeServiceFactory
 {
     /// <summary>
     ///     Draw the shape.
     /// </summary>
-    /// <param name="shape"></param>
     void Draw(Shape shape);
 }
 
@@ -18,14 +16,15 @@ public class ShapeServiceFactory : IShapeServiceFactory
     // </inherit>
     public void Draw(Shape shape)
     {
-        if (shape is Rectangle rectangle)
+        switch (shape)
         {
-            _rectangle.Draw(rectangle);
-            return;
+            case Rectangle rectangle:
+                _rectangle.Draw(rectangle);
+                return;
+            case Square square:
+                _square.Draw(square);
+                break;
         }
-
-        if (shape is Square square)
-            _square.Draw(square);
     }
 
     #region Dependency Injection

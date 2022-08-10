@@ -1,7 +1,7 @@
 ﻿namespace ExampleApp.Services.Polymorphism;
 
 /// <summary>
-///     A shape service.
+///     A common shape service.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface IShape<Shape>

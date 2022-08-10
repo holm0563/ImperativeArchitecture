@@ -1,5 +1,11 @@
 ﻿namespace ExampleApp.Services.Polymorphism;
 
+/// <summary>
+///     Advanced character service used to determine the character to draw based on position.
+/// </summary>
+/// <remarks>
+///     This pattern allows use to reuse code in a way that can be extended or changed later easy.
+/// </remarks>
 public interface IAdvancedCharacter
 {
     /// <summary>
@@ -50,6 +56,8 @@ public class SquareAdvancedService : IShape<Square>, IAdvancedCharacter
 
         Console.ResetColor();
     }
+
+    // Note no constructor or dependencies needed. This services does not need to reuse any of the original services functionality.
 }
 
 public class RectangleAdvancedService : IShape<Rectangle>

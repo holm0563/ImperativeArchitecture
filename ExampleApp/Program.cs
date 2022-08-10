@@ -6,13 +6,15 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+namespace ExampleApp;
+
 public class Program
 {
     public static void Main(string[] args)
     {
         //setup our DI
         var hostBuilder = Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, builder) => { builder.SetBasePath(Directory.GetCurrentDirectory()); })
+            .ConfigureAppConfiguration((_, builder) => { builder.SetBasePath(Directory.GetCurrentDirectory()); })
             .ConfigureServices(ConfigureDefaultServices)
             .ConfigureLogging((_, logging) =>
             {
@@ -20,13 +22,14 @@ public class Program
                 logging.AddConsole();
             });
 
-        // Pass in any argument or comment out this if statement to see the change in behavior.
+        // Pass in any argument to see the change in behavior.
+        // By default the launchSettings.json is configured to provide an argument.
         if (args.Length > 0)
             hostBuilder.ConfigureServices(ConfigureModifiedServices);
 
         var host = hostBuilder.Build();
 
-        var echoService = host.Services.GetService<IEchoService>();
+        var echoService = host.Services.GetService<IEcho>();
 
         EchoDemo(echoService);
 
@@ -35,7 +38,7 @@ public class Program
         PolyDemo(shapeServiceFactory);
     }
 
-    public static void EchoDemo(IEchoService? echoService)
+    public static void EchoDemo(IEcho? echoService)
     {
         var echo3 = new Echo
         {
@@ -82,7 +85,7 @@ public class Program
 
     public static void ConfigureDefaultServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.AddSingleton<IEchoService, EchoService>();
+        services.AddSingleton<IEcho, EchoService>();
         services.AddSingleton<IAdvancedCharacter, SquareAdvancedService>();
         services.AddSingleton<IShape<Square>, SquareService>();
         services.AddSingleton<IShape<Rectangle>, RectangleService>();
@@ -94,13 +97,11 @@ public class Program
     ///     This is very nice especially if we are using code as a nuget library and extending its functionality in another
     ///     library.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="services"></param>
     public static void ConfigureModifiedServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.Replace(new ServiceDescriptor(typeof(IEchoService),
+        services.Replace(new ServiceDescriptor(typeof(IEcho),
             new EchoAdvancedService(
-                services.GetService<IEchoService>())
+                services.GetService<IEcho>())
         ));
 
         services.Replace(new ServiceDescriptor(typeof(IShape<Square>),

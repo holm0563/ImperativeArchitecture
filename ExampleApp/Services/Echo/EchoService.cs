@@ -6,8 +6,7 @@ namespace ExampleApp.Services.Echo;
 /// <summary>
 ///     All Services must have interfaces with all public methods defined.
 /// </summary>
-// Todo: [DefaultServiceType[ServiceType.Singleton)] //Create attribute for auto generation
-public interface IEchoService
+public interface IEcho
 {
     /// <summary>
     ///     Gets the full string to echo including the repeated content.
@@ -19,7 +18,7 @@ public interface IEchoService
 /// <summary>
 ///     Echo Service
 /// </summary>
-public class EchoService : IEchoService
+public class EchoService : IEcho
 {
     // </inherit>
     public string ToString(Echo echo)
@@ -37,10 +36,6 @@ public class EchoService : IEchoService
             builder.AppendLine(echo.Message);
 
         return builder.ToString();
-    }
-
-    public void Demo()
-    {
     }
 
     #region Dependency Injection

@@ -3,11 +3,12 @@
 namespace ExampleApp.Services.Echo;
 
 /// <summary>
-///     Advanced example using decorator pattern.
+///     Advanced example using decorator pattern to extend a service later.
 /// </summary>
-public class EchoAdvancedService : IEchoService
+public class EchoAdvancedService : IEcho
 {
     // </inherit>
+    // Since interfaces are a requirement, documentation will not be required on public methods.
     public string ToString(Echo echo)
     {
         var advancedEcho = echo with { Repeat = 1 };
@@ -21,15 +22,17 @@ public class EchoAdvancedService : IEchoService
 
     #region Dependency Injection
 
-    private readonly IEchoService _originalService;
+    private readonly IEcho _originalService;
 
     /// <summary>
     ///     Constructor.
     /// </summary>
-    /// <param name="logger">The only parameters allowed are for dependency injection</param>
+    /// <remarks>
+    ///     Only arguments that will be allowed are interfaces that will be used for dependency injection.
+    /// </remarks>
     /// <param name="originalService">The original service to decorate.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public EchoAdvancedService(IEchoService originalService)
+    public EchoAdvancedService(IEcho originalService)
     {
         _originalService = originalService ?? throw new ArgumentNullException(nameof(originalService));
     }
