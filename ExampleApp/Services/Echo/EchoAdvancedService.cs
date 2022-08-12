@@ -5,7 +5,7 @@ namespace ExampleApp.Services.Echo;
 /// <summary>
 ///     Advanced example using decorator pattern to extend a service later.
 /// </summary>
-public class EchoAdvancedService : IEcho
+public class EchoServiceAdvancedService : IEchoService
 {
     // </inherit>
     // Since interfaces are a requirement, documentation will not be required on public methods.
@@ -22,7 +22,7 @@ public class EchoAdvancedService : IEcho
 
     #region Dependency Injection
 
-    private readonly IEcho _originalService;
+    private readonly IEchoService _originalService;
 
     /// <summary>
     ///     Constructor.
@@ -32,7 +32,7 @@ public class EchoAdvancedService : IEcho
     /// </remarks>
     /// <param name="originalService">The original service to decorate.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public EchoAdvancedService(IEcho originalService)
+    public EchoServiceAdvancedService(IEchoService originalService)
     {
         _originalService = originalService ?? throw new ArgumentNullException(nameof(originalService));
     }

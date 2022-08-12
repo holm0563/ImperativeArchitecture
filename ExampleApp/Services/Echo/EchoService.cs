@@ -6,7 +6,7 @@ namespace ExampleApp.Services.Echo;
 /// <summary>
 ///     All Services must have interfaces with all public methods defined.
 /// </summary>
-public interface IEcho
+public interface IEchoService
 {
     /// <summary>
     ///     Gets the full string to echo including the repeated content.
@@ -18,14 +18,14 @@ public interface IEcho
 /// <summary>
 ///     Echo Service
 /// </summary>
-public class EchoService : IEcho
+public class EchoServiceService : IEchoService
 {
     // </inherit>
     public string ToString(Echo echo)
     {
-        // Other patterns suchs as overriding tostring on the class itself can lead to expensive refactors later.
+        // Other patterns such as overriding tostring on the class itself can lead to expensive refactors later.
         // For example if you need to add logging support you can't without dependency injection.
-        _logger.Log(LogLevel.Debug, 0, "Method Called ToString");
+        _logger.Log(LogLevel.Trace, 0, "Method Called ToString");
 
         var builder = new StringBuilder(echo.Header);
 
@@ -40,14 +40,14 @@ public class EchoService : IEcho
 
     #region Dependency Injection
 
-    private readonly ILogger<EchoService> _logger;
+    private readonly ILogger<EchoServiceService> _logger;
 
     /// <summary>
     ///     Constructor.
     /// </summary>
     /// <param name="logger">The only parameters allowed are for dependency injection</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public EchoService(ILogger<EchoService> logger)
+    public EchoServiceService(ILogger<EchoServiceService> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }

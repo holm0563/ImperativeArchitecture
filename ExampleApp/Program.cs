@@ -18,8 +18,8 @@ public class Program
             .ConfigureServices(ConfigureDefaultServices)
             .ConfigureLogging((_, logging) =>
             {
-                logging.AddDebug();
-                logging.AddConsole();
+                logging.AddSimpleConsole(o => o.IncludeScopes = true);
+                logging.SetMinimumLevel(LogLevel.Trace);
             });
 
         // Pass in any argument to see the change in behavior.
@@ -29,63 +29,18 @@ public class Program
 
         var host = hostBuilder.Build();
 
-        var echoService = host.Services.GetService<IEcho>();
+        using var serviceScope = host.Services.CreateScope();
+        var services = serviceScope.ServiceProvider;
 
-        EchoDemo(echoService);
-
-        var shapeServiceFactory = host.Services.GetService<IShapeServiceFactory>();
-
-        PolyDemo(shapeServiceFactory);
+        var myService = services.GetRequiredService<Application>();
+        myService.Run();
     }
 
-    public static void EchoDemo(IEcho? echoService)
-    {
-        var echo3 = new Echo
-        {
-            Header = "Echo",
-            Message = "Testing",
-            Repeat = 3
-        };
-
-        var echo = echo3 with { Repeat = 1 };
-
-        Console.WriteLine(echoService?.ToString(echo3));
-        Console.ReadKey();
-        Console.WriteLine(echoService?.ToString(echo));
-        Console.ReadKey();
-    }
-
-    public static void PolyDemo(IShapeServiceFactory? shapeServiceFactory)
-    {
-        var square = new Square
-        {
-            Length = 3,
-
-            Image = 'X',
-            Color = ConsoleColor.DarkCyan
-        };
-
-        var rectangle = new Rectangle
-        {
-            Width = 6,
-            Height = 3,
-
-            Color = ConsoleColor.DarkGreen
-        };
-
-        IList<Shape> demos = new List<Shape> { square, rectangle };
-
-        foreach (var shape in demos)
-        {
-            Console.WriteLine($"Drawing {shape.GetType()}");
-            shapeServiceFactory?.Draw(shape);
-            Console.ReadKey();
-        }
-    }
 
     public static void ConfigureDefaultServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.AddSingleton<IEcho, EchoService>();
+        services.AddTransient<Application>();
+        services.AddSingleton<IEchoService, EchoServiceService>();
         services.AddSingleton<IAdvancedCharacter, SquareAdvancedService>();
         services.AddSingleton<IShape<Square>, SquareService>();
         services.AddSingleton<IShape<Rectangle>, RectangleService>();
@@ -99,9 +54,9 @@ public class Program
     /// </summary>
     public static void ConfigureModifiedServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.Replace(new ServiceDescriptor(typeof(IEcho),
-            new EchoAdvancedService(
-                services.GetService<IEcho>())
+        services.Replace(new ServiceDescriptor(typeof(IEchoService),
+            new EchoServiceAdvancedService(
+                services.GetService<IEchoService>())
         ));
 
         services.Replace(new ServiceDescriptor(typeof(IShape<Square>),
