@@ -1,4 +1,6 @@
-﻿namespace ExampleApp.Services.Echo;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ExampleApp.Services.Echo;
 
 /// <summary>
 ///     Plain old class type (POCO)
@@ -9,9 +11,12 @@
 /// </remarks>
 public record Echo
 {
+    public const int MaxRepeat = 10;
+
     public string? Header;
     public string Message = "";
-    public int Repeat = 1;
+
+    [Range(0, MaxRepeat)] public int Repeat = 1;
 
 
     // <summary>

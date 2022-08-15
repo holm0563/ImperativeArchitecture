@@ -32,7 +32,8 @@ public class EchoServiceService : IEchoService
         if (!string.IsNullOrWhiteSpace(echo.Header))
             builder.AppendLine();
 
-        for (var x = 0; x < echo.Repeat; x++)
+        var repeat = echo.Repeat > Echo.MaxRepeat ? Echo.MaxRepeat : echo.Repeat;
+        for (var x = 0; x < repeat; x++)
             builder.AppendLine(echo.Message);
 
         return builder.ToString();

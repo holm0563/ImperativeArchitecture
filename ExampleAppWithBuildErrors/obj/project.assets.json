@@ -1,0 +1,75 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "net6.0": []
+  },
+  "packageFolders": {
+    "C:\\Users\\dholmes\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Git\\ImperativeArchitecture\\ExampleAppWithBuildErrors\\ExampleAppWithBuildErrors.csproj",
+      "projectName": "ExampleAppWithBuildErrors",
+      "projectPath": "D:\\Git\\ImperativeArchitecture\\ExampleAppWithBuildErrors\\ExampleAppWithBuildErrors.csproj",
+      "packagesPath": "C:\\Users\\dholmes\\.nuget\\packages\\",
+      "outputPath": "D:\\Git\\ImperativeArchitecture\\ExampleAppWithBuildErrors\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\dholmes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "D:\\LocalNuget": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://navitaire-nps.pkgs.visualstudio.com/bcf2b210-305f-4533-890f-f71580ae0ac4/_packaging/DigitalServicesInternal/nuget/v3/index.json": {},
+        "https://navitaire-nps.visualstudio.com/Digital%20Platform/_packaging?_a=feed&feed=Extensions": {},
+        "https://pkgs.dev.azure.com/Navitaire/_packaging/artifacts%40Local/nuget/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
