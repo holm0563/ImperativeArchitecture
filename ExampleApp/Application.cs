@@ -36,6 +36,16 @@ public class Application
             _shapeServiceFactory?.Draw(shape);
             Console.ReadKey();
         }
+
+        // Senior Programmer Exercise
+        // How would you always show both the advanced demo and the simple demo here?
+        // Show work.
+
+        // Middle Developer Exercise:
+        // We find out we we want to now optionally draw to a file instead of the console window.
+        // Show example code.
+        // What patterns what you suggest to make this easier?
+        // Would your solutions work if this was a Nuget package built by another team in your company?
     }
 
     #region Dependency Injection
