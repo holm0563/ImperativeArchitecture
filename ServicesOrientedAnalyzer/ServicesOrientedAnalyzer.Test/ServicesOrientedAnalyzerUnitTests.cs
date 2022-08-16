@@ -1,59 +1,44 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using VerifyCS = ServicesOrientedAnalyzer.Test.CSharpCodeFixVerifier<
-    ServicesOrientedAnalyzer.ServicesOrientedAnalyzerAnalyzer,
-    ServicesOrientedAnalyzer.ServicesOrientedAnalyzerCodeFixProvider>;
+﻿using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using VerifyCS =
+    ServicesOrientedAnalyzer.Test.CSharpAnalyzerVerifier<ServicesOrientedAnalyzer.ServicesOrientedAnalyzerAnalyzer>;
 
 namespace ServicesOrientedAnalyzer.Test
 {
     [TestClass]
     public class ServicesOrientedAnalyzerUnitTest
     {
-        //No diagnostics expected to show up
         [TestMethod]
-        public async Task TestMethod1()
-        {
-            var test = @"";
-
-            await VerifyCS.VerifyAnalyzerAsync(test);
-        }
-
-        //Diagnostic and CodeFix both triggered and checked for
-        [TestMethod]
-        public async Task TestMethod2()
+        public async Task Test_ClassWithField_Throws()
         {
             var test = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+public class Echo
+{
+    private int? _repeat;
+}";
 
-    namespace ConsoleApplication1
-    {
-        class {|#0:TypeName|}
-        {   
+            var expected = VerifyCS.Diagnostic("ClassWithData")
+                .WithSpan(2, 14, 2, 18)
+                .WithArguments("Echo", "_repeat");
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }
-    }";
 
-            var fixtest = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+        [TestMethod]
+        public async Task Test_ClassWithProperty_Throws()
+        {
+            var test = @"
+public class Echo
+{
+    public virtual string Message { get; set; } = """";
+}";
 
-    namespace ConsoleApplication1
-    {
-        class TYPENAME
-        {   
-        }
-    }";
-
-            var expected = VerifyCS.Diagnostic("ServicesOrientedAnalyzer").WithLocation(0).WithArguments("TypeName");
-            await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
+            var expected = VerifyCS.Diagnostic("ClassWithData")
+                .WithSpan(2, 14, 2, 18)
+                .WithArguments("Echo", "Message");
+            var expected2 = VerifyCS.Diagnostic("DerivedClasses")
+                .WithSpan(2, 14, 2, 18)
+                .WithArguments("Echo", "Message");
+            await VerifyCS.VerifyAnalyzerAsync(test, expected, expected2);
         }
     }
 }

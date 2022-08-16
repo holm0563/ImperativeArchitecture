@@ -27,7 +27,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServicesOrientedAnalyzer.CodeFixes\ServicesOrientedAnalyzer.CodeFixes.csproj" />
     <ProjectReference Include="..\ServicesOrientedAnalyzer\ServicesOrientedAnalyzer.csproj" />
   </ItemGroup>
 

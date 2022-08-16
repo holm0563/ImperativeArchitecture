@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesOrientedAnalyzer", "ServicesOrientedAnalyzer\ServicesOrientedAnalyzer\ServicesOrientedAnalyzer.csproj", "{3C3A7701-B49F-4530-B9BD-99998580C1A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesOrientedAnalyzer.CodeFixes", "ServicesOrientedAnalyzer\ServicesOrientedAnalyzer.CodeFixes\ServicesOrientedAnalyzer.CodeFixes.csproj", "{F0C10537-C9CA-4507-B2B0-36A04A8956C6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesOrientedAnalyzer.Package", "ServicesOrientedAnalyzer\ServicesOrientedAnalyzer.Package\ServicesOrientedAnalyzer.Package.csproj", "{7829DBC0-5CF4-4BE4-BAA1-E1DD20EE8620}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesOrientedAnalyzer.Test", "ServicesOrientedAnalyzer\ServicesOrientedAnalyzer.Test\ServicesOrientedAnalyzer.Test.csproj", "{6D4E232E-C9C3-46DC-B1DB-1B92D91FFF93}"
@@ -38,10 +36,6 @@ Global
 		{3C3A7701-B49F-4530-B9BD-99998580C1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C3A7701-B49F-4530-B9BD-99998580C1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C3A7701-B49F-4530-B9BD-99998580C1A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0C10537-C9CA-4507-B2B0-36A04A8956C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0C10537-C9CA-4507-B2B0-36A04A8956C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0C10537-C9CA-4507-B2B0-36A04A8956C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0C10537-C9CA-4507-B2B0-36A04A8956C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7829DBC0-5CF4-4BE4-BAA1-E1DD20EE8620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7829DBC0-5CF4-4BE4-BAA1-E1DD20EE8620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7829DBC0-5CF4-4BE4-BAA1-E1DD20EE8620}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,7 +58,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3C3A7701-B49F-4530-B9BD-99998580C1A3} = {A1B7C88E-3B4D-4CC5-850D-03669E1F0777}
-		{F0C10537-C9CA-4507-B2B0-36A04A8956C6} = {A1B7C88E-3B4D-4CC5-850D-03669E1F0777}
 		{7829DBC0-5CF4-4BE4-BAA1-E1DD20EE8620} = {A1B7C88E-3B4D-4CC5-850D-03669E1F0777}
 		{6D4E232E-C9C3-46DC-B1DB-1B92D91FFF93} = {A1B7C88E-3B4D-4CC5-850D-03669E1F0777}
 		{F18D4A85-7862-474A-9D25-F6CDFD5325C3} = {A1B7C88E-3B4D-4CC5-850D-03669E1F0777}

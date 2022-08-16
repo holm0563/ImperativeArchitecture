@@ -38,6 +38,4 @@ public class EchoServiceAdvancedService : IEchoService
     }
 
     #endregion
-
-    // No public properties or fields allowed
 }

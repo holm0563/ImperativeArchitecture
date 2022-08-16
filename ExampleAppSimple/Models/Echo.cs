@@ -2,34 +2,27 @@
 
 namespace ExampleAppSimple.Models;
 
+public class Echo
+{
+    public virtual string Message { get; set; } = "";
+}
+
 /// <summary>
 ///     Plain old class type (POCO)
 /// </summary>
-/// <remarks>
-///     Todo: throw error `Identified a class with field values. Use records to define POCO types. These are easier to
-///     clone`
-/// </remarks>
-public class Echo
+/// todo: check for interface (for all public methods)
+public class Echo2
 {
-    /// <remarks>
-    ///     Todo: throw error `Private keywords is prohibited in POCO types`
-    /// </remarks>
     private int? _repeat;
 
     public string? Header;
 
-    /// <summary>
-    ///     Todo: throw error `Properties not allowed in POCO types`
-    /// </summary>
     /// <remarks>
     ///     The virtual key word identifies that this could have business logic associated
     ///     with this property when this class is extended.
     /// </remarks>
     public virtual string Message { get; set; } = "";
 
-    /// <summary>
-    ///     Todo: throw error `Properties not allowed in POCO types`
-    /// </summary>
     /// <remarks>
     ///     This essentially adds business logic which for simplicity and extendability we will only define in services.
     /// </remarks>

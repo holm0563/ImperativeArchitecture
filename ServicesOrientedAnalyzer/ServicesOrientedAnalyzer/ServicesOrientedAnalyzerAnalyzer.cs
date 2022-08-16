@@ -8,26 +8,32 @@ namespace ServicesOrientedAnalyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ServicesOrientedAnalyzerAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "ServicesOrientedAnalyzer";
-        private const string Category = "Naming";
+        private const string Category = "POCO";
 
-        // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
-        // See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Localizing%20Analyzers.md for more on localization
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.AnalyzerTitle),
-            Resources.ResourceManager, typeof(Resources));
+        public const string ClassWithData = nameof(ClassWithData);
+        public const string ClassWithFieldMessage = "Class '{0}' contains a field or property named '{1}'";
 
-        private static readonly LocalizableString MessageFormat =
-            new LocalizableResourceString(nameof(Resources.AnalyzerMessageFormat), Resources.ResourceManager,
-                typeof(Resources));
+        public const string ClassWithFieldDescription =
+            "These are restricted inside of classes. To define models use records. This helps keep business logic and data seperate.";
 
-        private static readonly LocalizableString Description =
-            new LocalizableResourceString(nameof(Resources.AnalyzerDescription), Resources.ResourceManager,
-                typeof(Resources));
+        public const string DerivedClasses = nameof(DerivedClasses);
 
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Error, true, Description);
+        public const string DerivedClassesWithFieldMessage =
+            "Class '{0}' contains a '{1}' with virtual or override keywords.";
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public const string DerivedClassesFieldDescription =
+            "Instead of using derived classes instead use services. See the Decorator pattern for more help. Services can be swapped at runtime where derived classes can not providing better flexibility.";
+
+        private static readonly DiagnosticDescriptor ClassWithFieldRule = new DiagnosticDescriptor(ClassWithData,
+            ClassWithData, ClassWithFieldMessage,
+            Category, DiagnosticSeverity.Error, true, ClassWithFieldDescription);
+
+        private static readonly DiagnosticDescriptor DerivedClassesFieldRule = new DiagnosticDescriptor(DerivedClasses,
+            DerivedClasses, DerivedClassesWithFieldMessage,
+            Category, DiagnosticSeverity.Error, true, DerivedClassesFieldDescription);
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(ClassWithFieldRule, DerivedClassesFieldRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -44,14 +50,21 @@ namespace ServicesOrientedAnalyzer
             // TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            // Find just those named type symbols with names containing lowercase letters.
-            if (namedTypeSymbol.Name.ToCharArray()
-                .Any(char.IsLower))
+            if (namedTypeSymbol.TypeKind == TypeKind.Class)
             {
-                // For all such symbols, produce a diagnostic.
-                var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
+                //if (namedTypeSymbol.IsStatic)
 
-                context.ReportDiagnostic(diagnostic);
+                var members = namedTypeSymbol.GetMembers();
+
+                var field = members.FirstOrDefault(m =>
+                    (m.Kind == SymbolKind.Field || m.Kind == SymbolKind.Property) && m.CanBeReferencedByName);
+                if (field != null)
+                    context.ReportDiagnostic(Diagnostic.Create(ClassWithFieldRule, namedTypeSymbol.Locations[0],
+                        namedTypeSymbol.Name, field.Name));
+
+                if (field.IsVirtual || field.IsOverride)
+                    context.ReportDiagnostic(Diagnostic.Create(DerivedClassesFieldRule, namedTypeSymbol.Locations[0],
+                        namedTypeSymbol.Name, field.Name));
             }
         }
     }
