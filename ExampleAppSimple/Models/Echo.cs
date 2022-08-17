@@ -4,15 +4,6 @@ namespace ExampleAppSimple.Models;
 
 public class Echo
 {
-    public virtual string Message { get; set; } = "";
-}
-
-/// <summary>
-///     Plain old class type (POCO)
-/// </summary>
-/// todo: check for interface (for all public methods)
-public class Echo2
-{
     private int? _repeat;
 
     public string? Header;

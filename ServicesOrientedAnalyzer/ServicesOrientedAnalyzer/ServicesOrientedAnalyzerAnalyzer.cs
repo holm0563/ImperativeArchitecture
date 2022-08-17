@@ -17,23 +17,32 @@ namespace ServicesOrientedAnalyzer
             "These are restricted inside of classes. To define models use records. This helps keep business logic and data seperate.";
 
         public const string DerivedClasses = nameof(DerivedClasses);
+        public const string DerivedClassesMethod = nameof(DerivedClassesMethod);
 
-        public const string DerivedClassesWithFieldMessage =
-            "Class '{0}' contains a '{1}' with virtual or override keywords.";
+        public const string DerivedClassesWithMethodMessage =
+            "Class '{0}' contains a '{1}' with virtual, static, or override keywords.";
+
+        public const string DerivedClassesMessage =
+            "Class '{0}' contains virtual, static, or override keywords.";
 
         public const string DerivedClassesFieldDescription =
-            "Instead of using derived classes instead use services. See the Decorator pattern for more help. Services can be swapped at runtime where derived classes can not providing better flexibility.";
+            "Instead of using derived classes use services. See the Decorator pattern for more help. Services can be swapped at runtime where derived and static classes can not providing better flexibility.";
 
         private static readonly DiagnosticDescriptor ClassWithFieldRule = new DiagnosticDescriptor(ClassWithData,
             ClassWithData, ClassWithFieldMessage,
             Category, DiagnosticSeverity.Error, true, ClassWithFieldDescription);
 
         private static readonly DiagnosticDescriptor DerivedClassesFieldRule = new DiagnosticDescriptor(DerivedClasses,
-            DerivedClasses, DerivedClassesWithFieldMessage,
+            DerivedClasses, DerivedClassesMessage,
+            Category, DiagnosticSeverity.Error, true, DerivedClassesFieldDescription);
+
+        private static readonly DiagnosticDescriptor DerivedClassesWithMethodFieldRule = new DiagnosticDescriptor(
+            DerivedClassesMethod,
+            DerivedClassesMethod, DerivedClassesWithMethodMessage,
             Category, DiagnosticSeverity.Error, true, DerivedClassesFieldDescription);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(ClassWithFieldRule, DerivedClassesFieldRule);
+            ImmutableArray.Create(ClassWithFieldRule, DerivedClassesFieldRule, DerivedClassesWithMethodFieldRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -52,7 +61,13 @@ namespace ServicesOrientedAnalyzer
 
             if (namedTypeSymbol.TypeKind == TypeKind.Class)
             {
-                //if (namedTypeSymbol.IsStatic)
+                if (namedTypeSymbol.DeclaredAccessibility != Accessibility.Public)
+                {
+                }
+
+                if (namedTypeSymbol.IsStatic || namedTypeSymbol.IsAbstract)
+                    context.ReportDiagnostic(Diagnostic.Create(DerivedClassesFieldRule, namedTypeSymbol.Locations[0],
+                        namedTypeSymbol.Name));
 
                 var members = namedTypeSymbol.GetMembers();
 
@@ -62,9 +77,12 @@ namespace ServicesOrientedAnalyzer
                     context.ReportDiagnostic(Diagnostic.Create(ClassWithFieldRule, namedTypeSymbol.Locations[0],
                         namedTypeSymbol.Name, field.Name));
 
-                if (field.IsVirtual || field.IsOverride)
-                    context.ReportDiagnostic(Diagnostic.Create(DerivedClassesFieldRule, namedTypeSymbol.Locations[0],
-                        namedTypeSymbol.Name, field.Name));
+                var invalidMethod = members.FirstOrDefault(m => m.Kind == SymbolKind.Method && (
+                    m.IsVirtual || m.IsStatic));
+                if (invalidMethod != null)
+                    context.ReportDiagnostic(Diagnostic.Create(DerivedClassesWithMethodFieldRule,
+                        namedTypeSymbol.Locations[0],
+                        namedTypeSymbol.Name, invalidMethod.Name));
             }
         }
     }
