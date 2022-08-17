@@ -37,7 +37,7 @@
   <Target Name="_AddAnalyzersToOutput">
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\ServicesOrientedAnalyzer.dll" PackagePath="analyzers/dotnet/cs" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\ServicesOrientedAnalyzer.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
+      <!--<TfmSpecificPackageFile Include="$(OutputPath)\ServicesOrientedAnalyzer.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />-->
     </ItemGroup>
   </Target>
 
