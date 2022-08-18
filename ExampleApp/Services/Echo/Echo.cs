@@ -14,3 +14,18 @@ public record Echo
 
     [Range(0, MaxRepeat)] public int Repeat { get; init; } = 1;
 }
+
+public interface ITest
+{
+}
+
+public class Test : ITest
+{
+    public Test(ITest echo)
+    {
+    }
+
+    public Test(ITest echo, ITest echo2)
+    {
+    }
+}

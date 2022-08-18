@@ -34,7 +34,7 @@ public class EchoServiceAdvancedService : IEchoService
     /// <exception cref="ArgumentNullException"></exception>
     public EchoServiceAdvancedService(IEchoService originalService)
     {
-        _originalService = originalService ?? throw new ArgumentNullException(nameof(originalService));
+        _originalService = originalService;
     }
 
     #endregion

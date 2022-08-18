@@ -49,6 +49,20 @@ public string Hi { get; set; }
         }
 
         [TestMethod]
+        public async Task Record_WithPrivateProperty_Fails()
+        {
+            var test = @"
+public record Echo
+{
+private string Hi { get; set; }
+}
+";
+
+            var expected = VerifyCS.Diagnostic("NotPublicInRecord");
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+        }
+
+        [TestMethod]
         public async Task Record_WithMethod_Fails()
         {
             var test = @"
@@ -62,8 +76,54 @@ public void Hi(){}
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }
 
-        //with ctors works
-        //with private property fails
-        //with private field fails
+        [TestMethod]
+        public async Task Record_WithPrivateMethod_Fails()
+        {
+            var test = @"
+public record Echo
+{
+private void Hi(){}
+}
+";
+
+            var expected = VerifyCS.Diagnostic("RecordWithMethod");
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+        }
+
+        [TestMethod]
+        public async Task Record_WithConstructor_Works()
+        {
+            var test = @"
+public record Test
+{
+    public Test(int forced)
+    {
+        
+    }
+}
+";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task Record_WithInterfaceContructor_Fails()
+        {
+            var test = @"
+public interface ITest
+{
+}
+
+public record Test
+{
+    public Test(ITest forced)
+    {
+    }
+}
+";
+
+            var expected = VerifyCS.Diagnostic("InterfaceInRecord");
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+        }
     }
 }

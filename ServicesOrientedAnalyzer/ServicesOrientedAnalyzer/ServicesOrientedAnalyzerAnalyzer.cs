@@ -13,7 +13,8 @@ namespace ServicesOrientedAnalyzer
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(ClassWithDataRule, DerivedClassesFieldRule, NotPublicRule,
-                ClassMissingInterfaceRule, ClassMethodMissingInterfaceRule, RecordWithMethodRule);
+                ClassMissingInterfaceRule, ClassMethodMissingInterfaceRule, RecordWithMethodRule,
+                NotPublicInRecordRule, InterfaceInRecordRule, ConstructorNotDIRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -39,11 +40,28 @@ namespace ServicesOrientedAnalyzer
 
             if (namedTypeSymbol.IsRecord)
             {
-                var method = members.FirstOrDefault(m => m.Kind == SymbolKind.Method && m.CanBeReferencedByName);
+                var method = members.FirstOrDefault(m =>
+                    m.Kind == SymbolKind.Method && m.CanBeReferencedByName && !m.IsImplicitlyDeclared);
                 if (method != null)
                     context.ReportDiagnostic(Diagnostic.Create(RecordWithMethodRule,
                         method.Locations[0],
                         namedTypeSymbol.Name, method.Name));
+
+                var field = members.FirstOrDefault(m =>
+                    (m.Kind == SymbolKind.Field || m.Kind == SymbolKind.Property) && m.CanBeReferencedByName &&
+                    !m.IsImplicitlyDeclared &&
+                    m.DeclaredAccessibility != Accessibility.Public);
+                if (field != null)
+                    context.ReportDiagnostic(Diagnostic.Create(NotPublicInRecordRule, field.Locations[0],
+                        namedTypeSymbol.Name, field.Name));
+
+                var restrictedConstructor = namedTypeSymbol.Constructors.FirstOrDefault(c =>
+                    c.Parameters.Any(t => t.Type.TypeKind == TypeKind.Interface));
+
+                if (restrictedConstructor != null)
+                    context.ReportDiagnostic(Diagnostic.Create(InterfaceInRecordRule,
+                        restrictedConstructor.Locations[0],
+                        namedTypeSymbol.Name, restrictedConstructor.Name));
             }
             else if (namedTypeSymbol.TypeKind == TypeKind.Class)
             {
@@ -70,6 +88,22 @@ namespace ServicesOrientedAnalyzer
                         context.ReportDiagnostic(Diagnostic.Create(ClassMethodMissingInterfaceRule,
                             method.Locations[0],
                             namedTypeSymbol.Name, method.Name));
+
+                var restrictedConstructor = namedTypeSymbol.Constructors.FirstOrDefault(c =>
+                    c.Parameters.Any(t => t.Type.TypeKind != TypeKind.Interface));
+
+                if (restrictedConstructor != null)
+                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDIRule,
+                        restrictedConstructor.Locations[0],
+                        namedTypeSymbol.Name, restrictedConstructor.Name));
+
+                if (
+                    namedTypeSymbol.Constructors.Count(c => !c.IsImplicitlyDeclared) > 1)
+                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDIRule,
+                        namedTypeSymbol.Constructors[0]
+                            .Locations[0],
+                        namedTypeSymbol.Name, namedTypeSymbol.Constructors[0]
+                            .Name));
             }
         }
 
@@ -84,6 +118,52 @@ namespace ServicesOrientedAnalyzer
         private static readonly DiagnosticDescriptor NotPublicRule = new DiagnosticDescriptor(NotPublic,
             NotPublic, NotPublicMessage,
             ClassCategory, DiagnosticSeverity.Warning, true, NotPublicDescription);
+
+        #endregion
+
+        #region Not Public in Record
+
+        public const string NotPublicInRecord = nameof(NotPublicInRecord);
+        public const string NotPublicInRecordMessage = "Record '{0}' contains a non public member named '{1}'";
+
+        public const string NotPublicInRecordDescription =
+            "Records are restricted to be plain old class objects. These do not have any logic inside of them. This helps keep business logic and data seperate.";
+
+        private static readonly DiagnosticDescriptor NotPublicInRecordRule = new DiagnosticDescriptor(NotPublicInRecord,
+            NotPublicInRecord, NotPublicInRecordMessage,
+            RecordCategory, DiagnosticSeverity.Error, true, NotPublicInRecordDescription);
+
+        #endregion
+
+        #region Interface in Record
+
+        public const string InterfaceInRecord = nameof(InterfaceInRecord);
+
+        public const string InterfaceInRecordMessage =
+            "Record '{0}' contains a constructor with an interface parameter named '{1}'";
+
+        public const string InterfaceInRecordDescription =
+            "Records are restricted to be plain old class objects. These do not have logic or dependency injection. This helps keep business logic and data seperate.";
+
+        private static readonly DiagnosticDescriptor InterfaceInRecordRule = new DiagnosticDescriptor(InterfaceInRecord,
+            InterfaceInRecord, InterfaceInRecordMessage,
+            RecordCategory, DiagnosticSeverity.Error, true, InterfaceInRecordDescription);
+
+        #endregion
+
+        #region Constructor not dependency injected
+
+        public const string ConstructorNotDI = nameof(ConstructorNotDI);
+
+        public const string ConstructorNotDIMessage =
+            "Class '{0}' contains a constructor with a non interface parameter named '{1}'";
+
+        public const string ConstructorNotDIDescription =
+            "Classes should be dependency injected. This gets overly complex if they have multiple constructors or constructors with other values.";
+
+        private static readonly DiagnosticDescriptor ConstructorNotDIRule = new DiagnosticDescriptor(ConstructorNotDI,
+            ConstructorNotDI, ConstructorNotDIMessage,
+            ClassCategory, DiagnosticSeverity.Error, true, ConstructorNotDIDescription);
 
         #endregion
 

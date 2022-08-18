@@ -86,7 +86,7 @@ public class RectangleAdvancedService : IShape<Rectangle>
 
     public RectangleAdvancedService(IAdvancedCharacter advancedCharacter)
     {
-        _advancedCharacter = advancedCharacter ?? throw new ArgumentNullException(nameof(advancedCharacter));
+        _advancedCharacter = advancedCharacter;
     }
 
     private readonly IAdvancedCharacter _advancedCharacter;

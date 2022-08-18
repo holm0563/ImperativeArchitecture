@@ -145,6 +145,48 @@ public abstract class Echo3: EchoService
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }
 
-        //Class_WithNonDIConstructor_Fails
+        [TestMethod]
+        public async Task Class_WithNonDIConstructor_Fails()
+        {
+            var test = @"
+public interface ITest
+{
+}
+
+public class Test: ITest
+{
+    public Test(int echo)
+    {
+    }
+}";
+
+            var expected = VerifyCS.Diagnostic("ConstructorNotDI");
+
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+        }
+
+        [TestMethod]
+        public async Task Class_WithMultipleConstructor_Fails()
+        {
+            var test = @"
+public interface ITest
+{
+}
+
+public class Test: ITest
+{
+    public Test(ITest echo)
+    {
+    }
+
+    public Test(ITest echo, ITest echo2)
+    {
+    }
+}";
+
+            var expected = VerifyCS.Diagnostic("ConstructorNotDI");
+
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
+        }
     }
 }

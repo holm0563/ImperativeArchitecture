@@ -11,7 +11,7 @@ How should we define classes? Is it best to use: protected, private, override, v
 
 This project will define an opinionated way to do these things using service oriented architecture. This provides consistency and flexibility as a project grows.
 
-Since the goal is to define good and consistant architecture other patterns will be recommended as well ranging from devops to recommended tooling.
+Ideally other patterns would be defined for other use cases.
 
 Essentially we are defining a subset of C#. This is much easier than a new programming language. We get all of the benefits of the C# system and the consistency and faster time to market benefits of having a simpler and focused architecture for our task.
 
@@ -21,7 +21,8 @@ Essentially we are defining a subset of C#. This is much easier than a new progr
 
 ## When to use a SOA
 * When you want to be open for extensibility
-* Needs to add robust logging (Hard to add later with things like nested static functions)
+* When you are building a library to be deployed to Nuget
+* Project needs to add robust logging (Hard to add later with things like nested static functions)
 * When following Microsofts AddServices patterns
 * Helps to avoid hiden state common in object oriented patterns
 
