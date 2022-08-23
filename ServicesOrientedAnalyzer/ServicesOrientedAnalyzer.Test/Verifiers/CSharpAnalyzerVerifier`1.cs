@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Immutable;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -37,6 +38,10 @@ namespace ServicesOrientedAnalyzer.Test
             {
                 TestCode = source
             };
+
+            test.ReferenceAssemblies = test.ReferenceAssemblies.WithPackages(ImmutableArray.Create(
+                new PackageIdentity("Microsoft.Extensions.DependencyInjection.Abstractions", "6.0.0")
+            ));
 
             test.ExpectedDiagnostics.AddRange(expected);
             await test.RunAsync(CancellationToken.None);

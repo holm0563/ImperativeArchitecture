@@ -1,10 +1,8 @@
-﻿using ExampleApp.Services.Polymorphism;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMissingInterface:ClassMissingInterface", Justification = "Not part of nuget library")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMethodMissingInterface:ClassMethodMissingInterface", Justification = "Not part of nuget library")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "DerivedClasses:DerivedClasses", Justification = "Not part of nuget library")]
-public static class ServiceCollectionExtensions
+namespace ExampleApp;
+
+internal static class ServiceCollectionExtensions
 {
     /// <summary>
     ///     Gets the first of the specific service from the service collection by type.
@@ -12,13 +10,13 @@ public static class ServiceCollectionExtensions
     /// <typeparam name="T">The type of the service.</typeparam>
     /// <param name="services">The instance of the service collection.</param>
     /// <returns>The specific service found.</returns>
-    public static T GetService<T>(this IServiceCollection services) where T : class
+    internal static T GetService<T>(this IServiceCollection services) where T : class
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
 
         var matchingServices = services.GetServices<T>();
-        
-        return matchingServices?.FirstOrDefault() ?? throw new ArgumentNullException(nameof(T));
+
+        return matchingServices?.FirstOrDefault() ?? throw new ArgumentNullException(typeof(T).FullName);
     }
 
     /// <summary>
@@ -27,7 +25,7 @@ public static class ServiceCollectionExtensions
     /// <typeparam name="T">The type of services.</typeparam>
     /// <param name="services">The instance of the service collection.</param>
     /// <returns>The specific services found.</returns>
-    public static IEnumerable<T>? GetServices<T>(this IServiceCollection services) where T : class
+    internal static IEnumerable<T>? GetServices<T>(this IServiceCollection services) where T : class
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
 

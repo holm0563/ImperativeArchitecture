@@ -1,18 +1,14 @@
-﻿using ExampleApp.Services.Echo;
-using ExampleApp.Services.Polymorphism;
+﻿using ExampleLibrary;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ExampleApp;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMissingInterface:ClassMissingInterface", Justification = "Not part of nuget library")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMethodMissingInterface:ClassMethodMissingInterface", Justification = "Not part of nuget library")]
-public class Program
+internal class Program
 {
-    public static void Main(string[] args)
+    internal static void Main(string[] args)
     {
         //setup our DI
         var hostBuilder = Host.CreateDefaultBuilder(args)
@@ -24,10 +20,21 @@ public class Program
                 logging.SetMinimumLevel(LogLevel.Trace);
             });
 
-        // Pass in any argument to see the change in behavior.
-        // By default the launchSettings.json is configured to provide an argument.
-        if (args.Length > 0)
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("Show advanced demo? Y/N ");
+        var advanced = Console.ReadKey();
+        Console.ResetColor();
+        Console.WriteLine();
+
+        if (advanced.Key != ConsoleKey.N)
+        {
+            Console.WriteLine("Showing advanced demo:");
             hostBuilder.ConfigureServices(ConfigureModifiedServices);
+        }
+        else
+        {
+            Console.WriteLine("Showing basic demo:");
+        }
 
         var host = hostBuilder.Build();
 
@@ -39,14 +46,11 @@ public class Program
     }
 
 
-    public static void ConfigureDefaultServices(HostBuilderContext context, IServiceCollection services)
+    internal static void ConfigureDefaultServices(HostBuilderContext context, IServiceCollection services)
     {
         services.AddTransient<Application>();
-        services.AddSingleton<IEchoService, EchoServiceService>();
-        services.AddSingleton<IAdvancedCharacter, SquareAdvancedService>();
-        services.AddSingleton<IShape<Square>, SquareService>();
-        services.AddSingleton<IShape<Rectangle>, RectangleService>();
-        services.AddSingleton<IShapeServiceFactory, ShapeServiceFactory>();
+
+        services.AddExampleLibrary();
     }
 
     /// <summary>
@@ -54,21 +58,8 @@ public class Program
     ///     This is very nice especially if we are using code as a nuget library and extending its functionality in another
     ///     library.
     /// </summary>
-    public static void ConfigureModifiedServices(HostBuilderContext context, IServiceCollection services)
+    internal static void ConfigureModifiedServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.Replace(new ServiceDescriptor(typeof(IEchoService),
-            new EchoServiceAdvancedService(
-                services.GetService<IEchoService>())
-        ));
-
-        services.Replace(new ServiceDescriptor(typeof(IShape<Square>),
-            new SquareAdvancedService()
-        ));
-
-        services.Replace(new ServiceDescriptor(typeof(IShape<Rectangle>),
-            new RectangleAdvancedService(
-                services.GetService<IAdvancedCharacter>()
-            )
-        ));
+        services.AddAdvancedExamples();
     }
 }

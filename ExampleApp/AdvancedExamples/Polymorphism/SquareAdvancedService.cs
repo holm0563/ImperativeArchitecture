@@ -1,4 +1,4 @@
-﻿namespace ExampleApp.Services.Polymorphism;
+﻿namespace ExampleLibrary.Polymorphism;
 
 /// <summary>
 ///     Advanced character service used to determine the character to draw based on position.
@@ -58,38 +58,4 @@ public class SquareAdvancedService : IShape<Square>, IAdvancedCharacter
     }
 
     // Note no constructor or dependencies needed. This services does not need to reuse any of the original services functionality.
-}
-
-public class RectangleAdvancedService : IShape<Rectangle>
-{
-    // </inherit>
-    public void Draw(Rectangle shape)
-    {
-        Console.ForegroundColor = shape.Color;
-
-        for (var y = 0; y < shape.Height; y++)
-        {
-            for (var x = 0; x < shape.Width; x++)
-            {
-                var edgeShape = _advancedCharacter.EdgeShape(x, y, shape.Width - 1, shape.Height - 1);
-
-                Console.Write(edgeShape ?? shape.Image);
-            }
-
-            Console.WriteLine();
-        }
-
-        Console.ResetColor();
-    }
-
-    #region Dependency Injection
-
-    public RectangleAdvancedService(IAdvancedCharacter advancedCharacter)
-    {
-        _advancedCharacter = advancedCharacter;
-    }
-
-    private readonly IAdvancedCharacter _advancedCharacter;
-
-    #endregion
 }

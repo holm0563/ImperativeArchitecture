@@ -1,16 +1,17 @@
-﻿namespace ExampleApp.Services.Polymorphism;
+﻿using System;
+
+namespace ExampleLibrary.Polymorphism;
 
 /// <summary>
 ///     A common shape service.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public interface IShape<Shape>
+public interface IShape<in T> where T : Shape
 {
     /// <summary>
     ///     Draw the shape.
     /// </summary>
     /// <param name="shape"></param>
-    void Draw(Shape shape);
+    void Draw(T shape);
 }
 
 public class SquareService : IShape<Square>

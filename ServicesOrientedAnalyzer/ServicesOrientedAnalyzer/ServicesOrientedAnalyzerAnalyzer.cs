@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ServicesOrientedAnalyzer
 {
@@ -32,9 +33,13 @@ namespace ServicesOrientedAnalyzer
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
             if (namedTypeSymbol.DeclaredAccessibility != Accessibility.Public)
+            {
                 context.ReportDiagnostic(Diagnostic.Create(NotPublicRule,
                     namedTypeSymbol.Locations[0],
                     namedTypeSymbol.Name));
+
+                return;
+            }
 
             var members = namedTypeSymbol.GetMembers();
 
@@ -65,6 +70,19 @@ namespace ServicesOrientedAnalyzer
             }
             else if (namedTypeSymbol.TypeKind == TypeKind.Class)
             {
+                if (namedTypeSymbol.IsStatic)
+                    if (members.All(m => m.Kind == SymbolKind.Method && m.IsStatic))
+                    {
+                        var allPass = true;
+
+                        foreach (var member in members)
+                            if (member is IMethodSymbol method && method.IsExtensionMethod &&
+                                method.Parameters.All(p => p.Type.GetType() == typeof(IServiceCollection)))
+                                allPass = false;
+
+                        if (allPass) return;
+                    }
+
                 if (!namedTypeSymbol.Interfaces.Any())
                     context.ReportDiagnostic(Diagnostic.Create(ClassMissingInterfaceRule,
                         namedTypeSymbol.Locations[0],

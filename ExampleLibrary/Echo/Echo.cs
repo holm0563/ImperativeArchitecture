@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExampleApp.Services.Echo;
+namespace ExampleLibrary.Echo;
 
 /// <summary>
 ///     Immutable Plain old class type (POCO)

@@ -16,6 +16,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
+  </ItemGroup>
+
 
 
 </Project>

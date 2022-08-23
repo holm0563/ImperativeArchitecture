@@ -1,4 +1,6 @@
-﻿namespace ExampleApp.Services.Polymorphism;
+﻿using System;
+
+namespace ExampleLibrary.Polymorphism;
 
 /// <summary>
 ///     A service factory used to instantiate the right service based on the POCO type.

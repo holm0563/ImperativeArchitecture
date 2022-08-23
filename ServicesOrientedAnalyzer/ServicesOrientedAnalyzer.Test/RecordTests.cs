@@ -26,7 +26,7 @@ public record Echo
             var test = @"
 public record Echo
 {
-   [Range(0, MaxRepeat)] public int Repeat = 1;
+   public int Repeat = 1;
 }
 ";
 

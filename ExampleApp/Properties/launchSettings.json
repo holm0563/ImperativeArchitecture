@@ -1,8 +1,7 @@
 {
   "profiles": {
     "ExampleApp": {
-      "commandName": "Project",
-      "commandLineArgs": "-advanced"
+      "commandName": "Project"
     }
   }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VerifyCS =
     ServicesOrientedAnalyzer.Test.CSharpAnalyzerVerifier<ServicesOrientedAnalyzer.ServicesOrientedAnalyzerAnalyzer>;
+// ReSharper disable once RedundantUsingDirective
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ServicesOrientedAnalyzer.Test
 {
@@ -48,7 +50,21 @@ public class Test : ITest
     {
         _originalService = originalService;
     }
-}}";
+}";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task Class_WithServiceCollection_DoesntThrow()
+        {
+            var test = @"
+using Microsoft.Extensions.DependencyInjection;
+public static class Services
+{
+    public static void AddExampleLibrary(this IServiceCollection services)
+    {}
+}";
 
             await VerifyCS.VerifyAnalyzerAsync(test);
         }

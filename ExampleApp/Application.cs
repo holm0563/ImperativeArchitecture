@@ -1,11 +1,9 @@
-﻿using ExampleApp.Services.Echo;
-using ExampleApp.Services.Polymorphism;
+﻿using ExampleLibrary.Echo;
+using ExampleLibrary.Polymorphism;
 
 namespace ExampleApp;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMissingInterface:ClassMissingInterface", Justification = "Not part of nuget library")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Class", "ClassMethodMissingInterface:ClassMethodMissingInterface", Justification = "Not part of nuget library")]
-public class Application
+internal class Application
 {
     internal void Run()
     {

@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using ExampleLibrary.Echo;
 
-namespace ExampleApp.Services.Echo;
+namespace ExampleApp.AdvancedExamples.Echo;
 
 /// <summary>
 ///     Advanced example using decorator pattern to extend a service later.
@@ -9,7 +10,7 @@ public class EchoServiceAdvancedService : IEchoService
 {
     // </inherit>
     // Since interfaces are a requirement, documentation will not be required on public methods.
-    public string ToString(Echo echo)
+    public string ToString(ExampleLibrary.Echo.Echo echo)
     {
         var advancedEcho = echo with { Repeat = 1 };
         var builder = new StringBuilder();

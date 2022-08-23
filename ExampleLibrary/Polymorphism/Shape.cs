@@ -1,4 +1,6 @@
-﻿namespace ExampleApp.Services.Polymorphism;
+﻿using System;
+
+namespace ExampleLibrary.Polymorphism;
 
 /// <summary>
 ///     Plain old class type (POCO)

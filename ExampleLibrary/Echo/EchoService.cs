@@ -1,7 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace ExampleApp.Services.Echo;
+namespace ExampleLibrary.Echo;
 
 /// <summary>
 ///     All Services must have interfaces with all public methods defined.

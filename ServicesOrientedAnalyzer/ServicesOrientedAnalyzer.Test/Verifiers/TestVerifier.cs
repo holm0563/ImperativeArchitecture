@@ -39,7 +39,18 @@ namespace ServicesOrientedAnalyzer.Test.Verifiers
             {
                 // Hacky way to test for one thing at a time.
                 if (message.StartsWith("Mismatch between number of diagnostics returned"))
-                    return;
+                {
+                    if (expected is int intExpected && actual is int intActual)
+                    {
+                        if (intExpected > 0 && intActual > 0)
+                            return;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 // Hacky way not to have to provide a location
                 if (message.StartsWith("Expected a project diagnostic with no location:"))
                     return;
