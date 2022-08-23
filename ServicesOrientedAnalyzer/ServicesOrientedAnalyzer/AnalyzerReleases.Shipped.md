@@ -12,3 +12,4 @@ InterfaceInRecord | Record | Error | ServicesOrientedAnalyzerAnalyzer
 NotPublic | Class | Warning | ServicesOrientedAnalyzerAnalyzer
 NotPublicInRecord | Record | Error | ServicesOrientedAnalyzerAnalyzer
 RecordWithMethod | Record | Error | ServicesOrientedAnalyzerAnalyzer
+ClassMethodMissingInterfaceRule| Class | Error | ServicesOrientedAnalyzerAnalyzer

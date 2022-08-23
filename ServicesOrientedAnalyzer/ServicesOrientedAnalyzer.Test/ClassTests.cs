@@ -203,7 +203,7 @@ public class Test: ITest
     }
 }";
 
-            var expected = VerifyCS.Diagnostic("ConstructorNotDI");
+            var expected = VerifyCS.Diagnostic("ConstructorNotDi");
 
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }
@@ -227,7 +227,7 @@ public class Test: ITest
     }
 }";
 
-            var expected = VerifyCS.Diagnostic("ConstructorNotDI");
+            var expected = VerifyCS.Diagnostic("ConstructorNotDi");
 
             await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }

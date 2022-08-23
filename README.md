@@ -26,15 +26,27 @@ Essentially we are defining a subset of C#. This is much easier than a new progr
 * When following Microsofts AddServices patterns
 * Helps to avoid hiden state common in object oriented patterns
 
-# Goals
-* Define a subset of recommended C# language features to help teams consistently achieve SOA patterns.
-  *  Document what patterns are allowed and the alternatives that are blocked
-  *  Document the "whys" of the architectural decisions
-* Build tooling to automate the recommended patterns
-  *  Should be automatable and used in Devops
-  *  Should provide instant feedback and build errors
-  *  Ideally some of the patterns can be code generated
-  *  Ideally provide refactoring tool tips to automatically convert code
+## Analyzers
+Analysis done by the extension to inforce an opinionated services oriented architecture in code.
+
+### All Symbols
+* NotPublic: `Warning` - Symbol '{0}' is not public. It is recommended to have most code public. Situations where you do not want to be open to extensibility should be very rare or live in another project outside your shared library.
+
+### Records
+Records are meant to signify data objects. These should be free of any business logic. The record type has a lot of advantages over class objects. It has built in shallow cloning and can be immutable.
+https://www.c-sharpcorner.com/article/c-sharp-9-0-introduction-to-record-types/
+
+* RecordWithMethod: `Error` - Record '{0}' contains a method named '{1}. Methods are restricted inside of records. To define business logic use classes. This helps keep business logic and data separate.'
+* NotPublicInRecord: `Error` - Record '{0}' contains a non public member named '{1}'. Records are restricted to be plain old class objects. These can not have any logic inside of them. This helps keep business logic and data separate.
+* InterfaceInRecord: `Error` - Record '{0}' contains a constructor with an interface parameter named '{1}'. Records are restricted to be plain old class objects. These do not have logic or dependency injection. This helps keep business logic and data separate.
+
+### Classes
+Classes are meant to define business logic. This should be completely free of state and use interfaces to provide extensibility.
+
+* ClassWithData: `Error` - Class '{0}' contains a field or property named '{1}'. Non private fields and properties are restricted inside of classes. To define models use records. This helps keep business logic and data separate.
+* ClassMethodMissingInterface: `Error` - Class '{0}' method '{1}' is missing a corresponding interface. All classes methods must use interfaces so that they are open to extension by other libraries.
+* ConstructorNotDi: `Error` - Class '{0}' contains a constructor with a non interface parameter named '{1}'. Classes should be dependency injected. This gets overly complex if they have multiple constructors or constructors with other values.
+* DerivedClasses: `Error` - Class '{0}' contains virtual, static, or override keywords. Instead of using derived classes use services. See the decorator pattern for more help. Services can be injected at runtime where derived and static classes can not providing better flexibility.
 
 # Futher Reading
 Object Oriented Patterns dont work well in a microservices stateless world.

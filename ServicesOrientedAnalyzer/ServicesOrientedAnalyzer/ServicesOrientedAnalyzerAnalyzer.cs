@@ -13,7 +13,7 @@ namespace ServicesOrientedAnalyzer
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(ClassWithDataRule, DerivedClassesFieldRule, NotPublicRule,
-                ClassMissingInterfaceRule, ClassMethodMissingInterfaceRule, RecordWithMethodRule,
+                ClassMethodMissingInterfaceRule, RecordWithMethodRule,
                 NotPublicInRecordRule, InterfaceInRecordRule, ConstructorNotDiRule);
 
         public override void Initialize(AnalysisContext context)
@@ -83,11 +83,6 @@ namespace ServicesOrientedAnalyzer
                         if (allPass) return;
                     }
 
-                if (!namedTypeSymbol.Interfaces.Any())
-                    context.ReportDiagnostic(Diagnostic.Create(ClassMissingInterfaceRule,
-                        namedTypeSymbol.Locations[0],
-                        namedTypeSymbol.Name));
-
                 if (namedTypeSymbol.IsStatic || namedTypeSymbol.IsAbstract)
                     context.ReportDiagnostic(Diagnostic.Create(DerivedClassesFieldRule,
                         namedTypeSymbol.Locations[0],
@@ -131,7 +126,7 @@ namespace ServicesOrientedAnalyzer
         public const string NotPublicMessage = "Symbol '{0}' is not public";
 
         public const string NotPublicDescription =
-            "Recommend having everything public. Situations where you want to not be open to extensibility should be very rare.";
+            "It is recommended to have most code public. Situations where you do not want to be open to extensibility should be very rare or live in another project outside your shared library.";
 
         private static readonly DiagnosticDescriptor NotPublicRule = new DiagnosticDescriptor(NotPublic,
             NotPublic, NotPublicMessage,
@@ -145,7 +140,7 @@ namespace ServicesOrientedAnalyzer
         public const string NotPublicInRecordMessage = "Record '{0}' contains a non public member named '{1}'";
 
         public const string NotPublicInRecordDescription =
-            "Records are restricted to be plain old class objects. These do not have any logic inside of them. This helps keep business logic and data seperate.";
+            "Records are restricted to be plain old class objects. These can not have any logic inside of them. This helps keep business logic and data separate.";
 
         private static readonly DiagnosticDescriptor NotPublicInRecordRule = new DiagnosticDescriptor(NotPublicInRecord,
             NotPublicInRecord, NotPublicInRecordMessage,
@@ -161,7 +156,7 @@ namespace ServicesOrientedAnalyzer
             "Record '{0}' contains a constructor with an interface parameter named '{1}'";
 
         public const string InterfaceInRecordDescription =
-            "Records are restricted to be plain old class objects. These do not have logic or dependency injection. This helps keep business logic and data seperate.";
+            "Records are restricted to be plain old class objects. These do not have logic or dependency injection. This helps keep business logic and data separate.";
 
         private static readonly DiagnosticDescriptor InterfaceInRecordRule = new DiagnosticDescriptor(InterfaceInRecord,
             InterfaceInRecord, InterfaceInRecordMessage,
@@ -191,7 +186,7 @@ namespace ServicesOrientedAnalyzer
         public const string ClassWithDataMessage = "Class '{0}' contains a field or property named '{1}'";
 
         public const string ClassWithDataDescription =
-            "These are restricted inside of classes. To define models use records. This helps keep business logic and data seperate.";
+            "Non private fields and properties are restricted inside of classes. To define models use records. This helps keep business logic and data separate.";
 
         private static readonly DiagnosticDescriptor ClassWithDataRule = new DiagnosticDescriptor(ClassWithData,
             ClassWithData, ClassWithDataMessage,
@@ -201,24 +196,13 @@ namespace ServicesOrientedAnalyzer
 
         #region Class Missing Interface
 
-        public const string ClassMissingInterface = nameof(ClassMissingInterface);
-        public const string ClassMissingInterfaceMessage = "Class '{0}' is missing an interface attribute";
-
-        public const string ClassMissingInterfaceDescription =
-            "All classes must use interfaces so that they are open to extension by other libraries.";
-
-        private static readonly DiagnosticDescriptor ClassMissingInterfaceRule = new DiagnosticDescriptor(
-            ClassMissingInterface,
-            ClassMissingInterface, ClassMissingInterfaceMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, ClassMissingInterfaceDescription);
-
         public const string ClassMethodMissingInterface = nameof(ClassMethodMissingInterface);
 
         public const string ClassMethodMissingInterfaceMessage =
-            "Class '{0}' method '{1}' is missing an interface attribute";
+            "Class '{0}' method '{1}' is missing a corresponding interface";
 
         public const string ClassMethodMissingInterfaceDescription =
-            "All classes must use interfaces so that they are open to extension by other libraries.";
+            "All classes methods must use interfaces so that they are open to extension by other libraries.";
 
         private static readonly DiagnosticDescriptor ClassMethodMissingInterfaceRule = new DiagnosticDescriptor(
             ClassMethodMissingInterface,
@@ -236,7 +220,7 @@ namespace ServicesOrientedAnalyzer
             "Class '{0}' contains virtual, static, or override keywords";
 
         public const string DerivedClassesFieldDescription =
-            "Instead of using derived classes use services. See the Decorator pattern for more help. Services can be swapped at runtime where derived and static classes can not providing better flexibility.";
+            "Instead of using derived classes use services. See the decorator pattern for more help. Services can be injected at runtime where derived and static classes can not providing better flexibility.";
 
         private static readonly DiagnosticDescriptor DerivedClassesFieldRule = new DiagnosticDescriptor(DerivedClasses,
             DerivedClasses, DerivedClassesMessage,
@@ -250,7 +234,7 @@ namespace ServicesOrientedAnalyzer
         public const string RecordWithMethodMessage = "Record '{0}' contains a method named '{1}'";
 
         public const string RecordWithMethodDescription =
-            "These are restricted inside of records. To define business logic use classes. This helps keep business logic and data seperate.";
+            "Methods are restricted inside of records. To define business logic use classes. This helps keep business logic and data separate.";
 
         private static readonly DiagnosticDescriptor RecordWithMethodRule = new DiagnosticDescriptor(RecordWithMethod,
             RecordWithMethod, RecordWithMethodMessage,
