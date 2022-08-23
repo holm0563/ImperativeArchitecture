@@ -28,7 +28,6 @@ public static class Application
         // Middle Developer Exercise:
         // We find out we have an unpredictable error we think is happening in the ToString method of Echo.
         // How should we introduce logging every time ToString is called? Show example code.
-        // Can you use the same patterns to add logging to AdvancedCharacterUtility.EdgeShape?
 
         // Now I want to change the behavior of ToString. Based on configuration I want to always print out the
         // message only once with another message saying how many times it should be repeated.

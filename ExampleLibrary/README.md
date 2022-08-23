@@ -1,3 +1,12 @@
+# Example Library
+This is a shared library example showing the benefits of dependency injection and a service oriented architecture (SOA).
+
+Documentation will be included in the code itself as well as additional readme files throughout.
+
+## Todo
+* Unit tests
+* Devops to provide deployable nuget packages
+
 # Folder Organization
 ## Grouping
 Group folders by feature and not by type. Grouping by type does not scale well as your application grows. 

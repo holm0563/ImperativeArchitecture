@@ -70,6 +70,33 @@ public static class Services
         }
 
         [TestMethod]
+        public async Task Class_WithAdvancedServiceCollection_DoesntThrow()
+        {
+            var test = @"
+using Microsoft.Extensions.DependencyInjection;
+public interface ITest
+{
+void Echo();
+}
+
+public class Test:ITest
+{
+    public void Echo()
+    {
+    }
+}
+public static class Services
+{
+    public static void AddExampleLibrary(this IServiceCollection services)
+    {
+services.AddSingleton<ITest, Test>();
+}
+}";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
         public async Task Class_MissingMethodInterface_Throws()
         {
             var test = @"

@@ -5,5 +5,4 @@ Documentation will be included in the code itself as well as additional readme f
 
 ## Todo
 * Unit tests
-* Devops to provide deployable nuget packages
 

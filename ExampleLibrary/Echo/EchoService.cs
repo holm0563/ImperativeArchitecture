@@ -55,6 +55,4 @@ public class EchoServiceService : IEchoService
     }
 
     #endregion
-
-    // No public properties or fields allowed
 }

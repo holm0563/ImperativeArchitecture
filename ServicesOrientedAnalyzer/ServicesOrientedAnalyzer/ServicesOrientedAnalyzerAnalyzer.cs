@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ServicesOrientedAnalyzer
 {
@@ -76,8 +75,9 @@ namespace ServicesOrientedAnalyzer
                         var allPass = true;
 
                         foreach (var member in members)
-                            if (member is IMethodSymbol method && method.IsExtensionMethod &&
-                                method.Parameters.All(p => p.Type.GetType() == typeof(IServiceCollection)))
+                            if (member is IMethodSymbol method && (!method.IsExtensionMethod ||
+                                                                   !method.Parameters.All(p =>
+                                                                       p.Type.Name.Contains("IServiceCollection"))))
                                 allPass = false;
 
                         if (allPass) return;
