@@ -14,7 +14,7 @@ namespace ServicesOrientedAnalyzer
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(ClassWithDataRule, DerivedClassesFieldRule, NotPublicRule,
                 ClassMissingInterfaceRule, ClassMethodMissingInterfaceRule, RecordWithMethodRule,
-                NotPublicInRecordRule, InterfaceInRecordRule, ConstructorNotDIRule);
+                NotPublicInRecordRule, InterfaceInRecordRule, ConstructorNotDiRule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -111,13 +111,13 @@ namespace ServicesOrientedAnalyzer
                     c.Parameters.Any(t => t.Type.TypeKind != TypeKind.Interface));
 
                 if (restrictedConstructor != null)
-                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDIRule,
+                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDiRule,
                         restrictedConstructor.Locations[0],
                         namedTypeSymbol.Name, restrictedConstructor.Name));
 
                 if (
                     namedTypeSymbol.Constructors.Count(c => !c.IsImplicitlyDeclared) > 1)
-                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDIRule,
+                    context.ReportDiagnostic(Diagnostic.Create(ConstructorNotDiRule,
                         namedTypeSymbol.Constructors[0]
                             .Locations[0],
                         namedTypeSymbol.Name, namedTypeSymbol.Constructors[0]
@@ -128,7 +128,7 @@ namespace ServicesOrientedAnalyzer
         #region Not Public
 
         public const string NotPublic = nameof(NotPublic);
-        public const string NotPublicMessage = "Symbol '{0}' is not public.";
+        public const string NotPublicMessage = "Symbol '{0}' is not public";
 
         public const string NotPublicDescription =
             "Recommend having everything public. Situations where you want to not be open to extensibility should be very rare.";
@@ -171,17 +171,17 @@ namespace ServicesOrientedAnalyzer
 
         #region Constructor not dependency injected
 
-        public const string ConstructorNotDI = nameof(ConstructorNotDI);
+        public const string ConstructorNotDi = nameof(ConstructorNotDi);
 
-        public const string ConstructorNotDIMessage =
+        public const string ConstructorNotDiMessage =
             "Class '{0}' contains a constructor with a non interface parameter named '{1}'";
 
-        public const string ConstructorNotDIDescription =
+        public const string ConstructorNotDiDescription =
             "Classes should be dependency injected. This gets overly complex if they have multiple constructors or constructors with other values.";
 
-        private static readonly DiagnosticDescriptor ConstructorNotDIRule = new DiagnosticDescriptor(ConstructorNotDI,
-            ConstructorNotDI, ConstructorNotDIMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, ConstructorNotDIDescription);
+        private static readonly DiagnosticDescriptor ConstructorNotDiRule = new DiagnosticDescriptor(ConstructorNotDi,
+            ConstructorNotDi, ConstructorNotDiMessage,
+            ClassCategory, DiagnosticSeverity.Error, true, ConstructorNotDiDescription);
 
         #endregion
 
@@ -233,7 +233,7 @@ namespace ServicesOrientedAnalyzer
         public const string DerivedClassesMethod = nameof(DerivedClassesMethod);
 
         public const string DerivedClassesMessage =
-            "Class '{0}' contains virtual, static, or override keywords.";
+            "Class '{0}' contains virtual, static, or override keywords";
 
         public const string DerivedClassesFieldDescription =
             "Instead of using derived classes use services. See the Decorator pattern for more help. Services can be swapped at runtime where derived and static classes can not providing better flexibility.";
