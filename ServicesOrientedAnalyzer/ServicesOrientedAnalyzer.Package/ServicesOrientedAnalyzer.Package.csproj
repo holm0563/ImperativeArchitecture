@@ -11,13 +11,14 @@
     <PackageId>ServicesOrientedAnalyzer</PackageId>
     <PackageVersion>0.2.1</PackageVersion>
     <Authors>Derek Holmes</Authors>
-    <PackageLicenseUrl>https://github.com/holm0563/ImperativeArchitecture/blob/main/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/holm0563/ImperativeArchitecture</PackageProjectUrl>
     <RepositoryUrl>https://github.com/holm0563/ImperativeArchitecture</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>ServicesOrientedAnalyzer</Description>
-    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
-    <PackageTags>ServicesOrientedAnalyzer, analyzers</PackageTags>
+	  <Title>Services Oriented Analyzer</Title>
+    <Description>Define an opinionated architecture standard for C# libraries using modern practices.</Description>
+    <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
+    <PackageTags>ServicesOrientedAnalyzer, analyzers, libraries</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <NoPackageAnalysis>true</NoPackageAnalysis>
 

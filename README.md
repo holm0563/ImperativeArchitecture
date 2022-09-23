@@ -1,5 +1,5 @@
 # Objective
-Define an opinionated architecture standard for C# that focuses its scope based on modern patterns like SOA (service oriented architecture), DI (dependency injection), Statelessness. This improves productivity, reusability, and standardization for software development teams.
+Define an opinionated architecture standard for C# libraries that creates modern and consistent architectural patterns. Enforce these patterns using C# analyzers.
 
 # Overview
 When it comes to architecture C# is too robust. Its a multiuse tool that can be used for so many different use cases. This goes against the KISS philosophy (keep it simple stupid). When we are using C# for specific use cases like microservices, libraries, etc we want to use the "good parts" and be consistent. Teams struggle because
