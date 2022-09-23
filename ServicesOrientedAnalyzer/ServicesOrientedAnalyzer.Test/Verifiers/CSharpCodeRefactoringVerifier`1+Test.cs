@@ -2,6 +2,8 @@
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using ServicesOrientedAnalyzer.Test.Verifiers;
 
+#pragma warning disable CS8602
+
 namespace ServicesOrientedAnalyzer.Test
 {
     public static partial class CSharpCodeRefactoringVerifier<TCodeRefactoring>

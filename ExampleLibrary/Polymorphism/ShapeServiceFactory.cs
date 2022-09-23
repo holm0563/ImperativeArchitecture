@@ -34,6 +34,7 @@ public class ShapeServiceFactory : IShapeServiceFactory
     private readonly IShape<Square> _square;
     private readonly IShape<Rectangle> _rectangle;
 
+
     public ShapeServiceFactory(IShape<Square> square, IShape<Rectangle> rectangle)
     {
         //It could be simpler code was to use 

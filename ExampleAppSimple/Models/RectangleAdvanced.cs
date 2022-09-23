@@ -4,10 +4,6 @@ namespace ExampleAppSimple.Models;
 
 public class RectangleAdvanced : Rectangle
 {
-    public int Height;
-
-    public int Width;
-
     public override void Draw()
     {
         Console.ForegroundColor = Color;

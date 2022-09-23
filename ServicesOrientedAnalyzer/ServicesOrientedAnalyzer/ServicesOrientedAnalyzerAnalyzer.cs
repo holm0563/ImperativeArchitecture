@@ -11,6 +11,8 @@ namespace ServicesOrientedAnalyzer
         private const string ClassCategory = "Class";
         private const string RecordCategory = "Record";
 
+        private const string HelpLink = "https://github.com/holm0563/ImperativeArchitecture";
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(ClassWithDataRule, DerivedClassesFieldRule, NotPublicRule,
                 ClassMethodMissingInterfaceRule, RecordWithMethodRule,
@@ -28,7 +30,6 @@ namespace ServicesOrientedAnalyzer
 
         private static void AnalyzeSymbol(SymbolAnalysisContext context)
         {
-            // TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
             if (namedTypeSymbol.DeclaredAccessibility != Accessibility.Public)
@@ -130,7 +131,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor NotPublicRule = new DiagnosticDescriptor(NotPublic,
             NotPublic, NotPublicMessage,
-            ClassCategory, DiagnosticSeverity.Warning, true, NotPublicDescription);
+            ClassCategory, DiagnosticSeverity.Warning, true, NotPublicDescription, HelpLink);
 
         #endregion
 
@@ -144,7 +145,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor NotPublicInRecordRule = new DiagnosticDescriptor(NotPublicInRecord,
             NotPublicInRecord, NotPublicInRecordMessage,
-            RecordCategory, DiagnosticSeverity.Error, true, NotPublicInRecordDescription);
+            RecordCategory, DiagnosticSeverity.Error, true, NotPublicInRecordDescription, HelpLink);
 
         #endregion
 
@@ -160,7 +161,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor InterfaceInRecordRule = new DiagnosticDescriptor(InterfaceInRecord,
             InterfaceInRecord, InterfaceInRecordMessage,
-            RecordCategory, DiagnosticSeverity.Error, true, InterfaceInRecordDescription);
+            RecordCategory, DiagnosticSeverity.Error, true, InterfaceInRecordDescription, HelpLink);
 
         #endregion
 
@@ -176,7 +177,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor ConstructorNotDiRule = new DiagnosticDescriptor(ConstructorNotDi,
             ConstructorNotDi, ConstructorNotDiMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, ConstructorNotDiDescription);
+            ClassCategory, DiagnosticSeverity.Error, true, ConstructorNotDiDescription, HelpLink);
 
         #endregion
 
@@ -190,7 +191,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor ClassWithDataRule = new DiagnosticDescriptor(ClassWithData,
             ClassWithData, ClassWithDataMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, ClassWithDataDescription);
+            ClassCategory, DiagnosticSeverity.Error, true, ClassWithDataDescription, HelpLink);
 
         #endregion
 
@@ -207,14 +208,13 @@ namespace ServicesOrientedAnalyzer
         private static readonly DiagnosticDescriptor ClassMethodMissingInterfaceRule = new DiagnosticDescriptor(
             ClassMethodMissingInterface,
             ClassMethodMissingInterface, ClassMethodMissingInterfaceMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, ClassMethodMissingInterfaceDescription);
+            ClassCategory, DiagnosticSeverity.Error, true, ClassMethodMissingInterfaceDescription, HelpLink);
 
         #endregion
 
         #region Derived Classes
 
         public const string DerivedClasses = nameof(DerivedClasses);
-        public const string DerivedClassesMethod = nameof(DerivedClassesMethod);
 
         public const string DerivedClassesMessage =
             "Class '{0}' contains virtual, static, or override keywords";
@@ -224,7 +224,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor DerivedClassesFieldRule = new DiagnosticDescriptor(DerivedClasses,
             DerivedClasses, DerivedClassesMessage,
-            ClassCategory, DiagnosticSeverity.Error, true, DerivedClassesFieldDescription);
+            ClassCategory, DiagnosticSeverity.Error, true, DerivedClassesFieldDescription, HelpLink);
 
         #endregion
 
@@ -238,7 +238,7 @@ namespace ServicesOrientedAnalyzer
 
         private static readonly DiagnosticDescriptor RecordWithMethodRule = new DiagnosticDescriptor(RecordWithMethod,
             RecordWithMethod, RecordWithMethodMessage,
-            RecordCategory, DiagnosticSeverity.Error, true, RecordWithMethodDescription);
+            RecordCategory, DiagnosticSeverity.Error, true, RecordWithMethodDescription, HelpLink);
 
         #endregion
     }
